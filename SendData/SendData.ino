@@ -1,11 +1,12 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
-  
-char* ssid = "Wifi_Sala";
-char* password =  "cris8194";
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+
+const char* ssid = "Jota";
+const char* password = "jota12345";
 
 String devURL = "http://192.168.1.102:3000/teste?id=09712&temperature=20";
-String systemURL = "http://bombastesteback.herokuapp.com/data/teste? temperature=31";
+String systemURL = "http://bombastesteback.herokuapp.com/data/teste?temperature=22";
   
 void setup() {
   
@@ -28,7 +29,7 @@ void loop() {
   
    HTTPClient http;   
   
-   http.begin(devURL);  //Specify destination for HTTP request
+   http.begin(systemURL);  //Specify destination for HTTP request
    http.addHeader("Content-Type", "text/plain");             //Specify content-type header
    String body = "Oi";
    int httpResponseCode = http.POST(body);   //Send the actual POST request
@@ -55,6 +56,6 @@ void loop() {
   
  }
   
-  delay(10000);  //Send a request every 10 seconds
+  delay(60000);  //Send a request every 1 minute
   
 }
