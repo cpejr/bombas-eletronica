@@ -5,9 +5,23 @@
 const char* ssid = "Jota";
 const char* password = "jota12345";
 
-String devURL = "http://192.168.1.102:3000/teste?id=09712&temperature=20";
-String systemURL = "http://bombastesteback.herokuapp.com/data/teste?temperature=22";
-  
+String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
+
+// -------------- codigo da temperatura----------
+#ifdef __cplusplus
+  extern "C" {
+ #endif
+ 
+  uint8_t temprature_sens_read();
+ 
+#ifdef __cplusplus
+}
+#endif
+uint8_t temprature_sens_read();
+
+int temp;
+// --------- fim codigo da temperatura
+
 void setup() {
   
   Serial.begin(115200);
@@ -21,21 +35,25 @@ void setup() {
   }
   
   Serial.println("Connected to the WiFi network");
-  
 }
   
 void loop() {
+
+    
  if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
-  
+
+   temp = ((temprature_sens_read() - 32) / 1.8);
+   Serial.println(temp);
+   
    HTTPClient http;   
   
-   http.begin(systemURL);  //Specify destination for HTTP request
+   http.begin(systemURL+"?temperature="+String(temp));  //Specify destination for HTTP request
    http.addHeader("Content-Type", "text/plain");             //Specify content-type header
    String body = "Oi";
    int httpResponseCode = http.POST(body);   //Send the actual POST request
   
    if(httpResponseCode>0){
-  
+
     String response = http.getString();                       //Get the response to the request
   
     Serial.println(httpResponseCode);   //Print return code
@@ -56,6 +74,6 @@ void loop() {
   
  }
   
-  delay(60000);  //Send a request every 1 minute
-  
+  //delay(60000);  //Send a request every 1 minute
+  delay(15000);
 }
