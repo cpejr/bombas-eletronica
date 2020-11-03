@@ -2,8 +2,8 @@
 #include <HTTPClient.h>
 
 
-const char* ssid = "Jota";
-const char* password = "jota12345";
+const char* ssid = "NET_2GCB0FA0";
+const char* password = "4BCB0FA0";
 
 String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
 
