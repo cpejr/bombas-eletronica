@@ -1,26 +1,23 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Wire.h>  //Vem no Arduino já
 
+#define ONE_WIRE_BUS 2 //variavel do pino 2 que esta plugado o Sensor de Temperatura
+
+ 
+//Instacia o Objeto oneWire e Seta o pino do Sensor para iniciar as leituras
+OneWire oneWire(ONE_WIRE_BUS);
+ 
+// Pass our oneWire reference to Dallas Temperature. 
+//Repassa as referencias do oneWire para o Sensor Dallas (DS18B20)
+DallasTemperature temperature_sensor(&oneWire);
 
 const char* ssid = "NET_2GCB0FA0";
 const char* password = "4BCB0FA0";
 
 String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
-
-// -------------- codigo da temperatura----------
-#ifdef __cplusplus
-  extern "C" {
- #endif
- 
-  uint8_t temprature_sens_read();
- 
-#ifdef __cplusplus
-}
-#endif
-uint8_t temprature_sens_read();
-
-int temp;
-// --------- fim codigo da temperatura
 
 void setup() {
   
@@ -28,6 +25,7 @@ void setup() {
   delay(4000);   //Delay needed before calling the WiFi.begin
   
   WiFi.begin(ssid, password); 
+  temperature_sensor.begin();
   
   while (WiFi.status() != WL_CONNECTED) { //Check for the connection
     delay(1000);
@@ -42,8 +40,11 @@ void loop() {
     
  if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
 
-   temp = ((temprature_sens_read() - 32) / 1.8);
-   Serial.println(temp);
+   //Sensor de Temperatura
+   temperature_sensor.requestTemperatures();
+   // A temperatura em Celsius para o dispositivo 1 no índice 0 (é possivel ligar varios sensores usando a mesma porta do arduino)
+   float temp=temperature_sensor.getTempCByIndex(0);
+   Serial.println(temp); 
    
    HTTPClient http;   
   
