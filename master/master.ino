@@ -75,6 +75,6 @@ void loop() {
   
  }
   
-  //delay(60000);  //Send a request every 1 minute
-  delay(15000);
+  delay(300000);  //Send a request every 5 minute
+  //delay(15000);
 }
