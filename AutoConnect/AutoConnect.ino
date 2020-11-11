@@ -1,27 +1,13 @@
-#include <WiFi.h>
-#include <WebServer.h>
 #include <AutoConnect.h>
-#include <HTTPClient.h>
+#include <ESP8266HTTPClient.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
 
-WebServer Server;
+ESP8266WebServer Server;
 AutoConnect Portal(Server);
 
 String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
 
-// -------------- codigo da temperatura----------
-#ifdef __cplusplus
-  extern "C" {
- #endif
- 
-  uint8_t temprature_sens_read();
- 
-#ifdef __cplusplus
-}
-#endif
-uint8_t temprature_sens_read();
-
-int temp;
-// --------- fim codigo da temperatura
 void rootPage() {
   char content[] = "Hello, world";
   Server.send(200, "text/plain", content);
@@ -29,12 +15,45 @@ void rootPage() {
 void setup() {
   delay(1000);
   Serial.begin(115200);
-  Serial.println();
+  Serial.println("Começou");
   Server.on("/", rootPage);
   if (Portal.begin()) {
     Serial.println("HTTP server:" + WiFi.localIP().toString());
+    
   }
 }
 void loop() {
+  if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
+   
+   HTTPClient http;   
+  
+   http.begin(systemURL+"?temperature="+String(32));  //Specify destination for HTTP request
+   http.addHeader("Content-Type", "text/plain");             //Specify content-type header
+   String body = "Oi";
+   int httpResponseCode = http.POST(body);   //Send the actual POST request
+  
+   if(httpResponseCode>0){
+
+    String response = http.getString();                       //Get the response to the request
+  
+    Serial.println(httpResponseCode);   //Print return code
+    Serial.println(response);           //Print request answer
+  
+   }else{
+  
+    Serial.print("Error on sending POST: ");
+    Serial.println(httpResponseCode);
+  
+   }
+  
+   http.end();  //Free resources
+  
+ }else{
+  
+    Serial.println("Error in WiFi connection");   
+  
+ }
+  
+  delay(10000);  //Send a request every 5 minute
   Portal.handleClient();
 }
