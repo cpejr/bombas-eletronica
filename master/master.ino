@@ -2,6 +2,10 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
+//Bibliotecas do AutoConnect
+#include <AutoConnect.h>
+#include <WebServer.h>
+
 //Bibliotecas sensor de temperatura
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -21,29 +25,24 @@ EnergyMonitor emon1;
 int rede = 5; //Tensao da rede eletrica
 int pino_sct = 25; //Pino do sensor SCT
 
-//Configuracoes Rede
-//const char* ssid = "Jota";
-//const char* password = "jota12345";
-const char* ssid = "NET_2GCB0FA0";
-const char* password = "4BCB0FA0";
+//Configuracoes do Autoconnect
+WebServer Server;
+AutoConnect Portal(Server);
+void rootPage() {
+  char content[] = "Hello, world";
+  Server.send(200, "text/plain", content);
+}
+
 String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
 
 
 void setup() {
-  
+  delay(1000);
   Serial.begin(115200);
-  delay(4000);   //Delay needed before calling the WiFi.begin
-  
-  WiFi.begin(ssid, password); 
-  temperature_sensor.begin();
-  emon1.current(pino_sct, 60); //Pino, calibracao - Cur Const= Ratio/BurdenR. 2000/33 = 60
-  
-  while (WiFi.status() != WL_CONNECTED) { //Check for the connection
-    delay(1000);
-    Serial.println("Connecting to WiFi..");
+  Server.on("/", rootPage);
+  if (Portal.begin()) {
+    Serial.println("HTTP server:" + WiFi.localIP().toString());
   }
-  
-  Serial.println("Connected to the WiFi network");
 }
   
 void loop() {
