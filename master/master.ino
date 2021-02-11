@@ -64,9 +64,9 @@ void loop() {
    
    HTTPClient http;   
   
-   http.begin(systemURL+"?temperature="+String(temp));  //Specify destination for HTTP request
-   http.addHeader("Content-Type", "text/plain");             //Specify content-type header
-   String body = "Oi";
+   http.begin(systemURL);  //Specify destination for HTTP request
+   http.addHeader("Content-Type", "application/json");             //Specify content-type header
+   String body = "{\"temperature\":\"32\",\"current\":\"10\",\"voltage\":\"24.25\",\"vibrations\":\"10\"}";
    int httpResponseCode = http.POST(body);   //Send the actual POST request
   
    if(httpResponseCode>0){

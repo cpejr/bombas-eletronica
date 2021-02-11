@@ -7,6 +7,7 @@ WebServer Server;
 AutoConnect Portal(Server);
 
 String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
+//String systemURL = "http://192.168.1.105:3000/teste";
 
 void rootPage() {
   char content[] = "Hello, world";
@@ -27,9 +28,9 @@ void loop() {
    
    HTTPClient http;   
   
-   http.begin(systemURL+"?temperature="+String(32));  //Specify destination for HTTP request
-   http.addHeader("Content-Type", "text/plain");             //Specify content-type header
-   String body = "Oi";
+   http.begin(systemURL);  //Specify destination for HTTP request
+   http.addHeader("Content-Type", "application/json");             //Specify content-type header
+   String body = "{\"api_key\":\"tPmAT5Ab3j7F9\",\"sensor\":\"BME280\",\"value1\":\"24.25\",\"value2\":\"49.54\",\"value3\":\"1005.14\"}"";
    int httpResponseCode = http.POST(body);   //Send the actual POST request
   
    if(httpResponseCode>0){
