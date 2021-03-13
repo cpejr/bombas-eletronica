@@ -14,8 +14,10 @@ ACSubmit(send, "HELLO", "/newIp");
 
 
 void onNewIp() {
+  String echo = Server.arg("input1");
+  Serial.println(echo);
   Server.sendHeader("Location", String("/_ac"), true);
-  Server.send ( 302, "text/plain", "");
+  Server.send(302, "text/plain", "");
 }
 
 void rootPage() {
