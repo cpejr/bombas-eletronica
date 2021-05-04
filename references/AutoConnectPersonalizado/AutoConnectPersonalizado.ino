@@ -3,6 +3,9 @@
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <Preferences.h>
+
+Preferences preferences;
 
 WebServer Server;
 AutoConnect Portal(Server);
@@ -34,7 +37,16 @@ void onNewIp() {
   
     Serial.println(httpResponseCode);   //Print return code
     Serial.println(response);           //Print request answer
+
   
+    preferences.begin("equipment", false);
+    
+    String idString = String(id);
+
+    preferences.putString("id", idString);
+
+    preferences.end();
+    
    }else{
   
     Serial.print("Error on sending POST: ");
@@ -58,6 +70,7 @@ void rootPage() {
 
 void setup() {
   Serial.begin(9600);
+  preferences.begin("equipment", false);
   equipmentIdPage.add({header, caption, input1, send});
   Portal.join(equipmentIdPage);
   Server.on("/", rootPage);
@@ -65,6 +78,11 @@ void setup() {
   if (Portal.begin()) {
     Serial.println("HTTP server:" + WiFi.localIP().toString());
   }
+
+    Serial.println("ID armazenado: ");
+    String id = preferences.getString("id", "");
+    Serial.println(id);
+    preferences.end();
 }
 void loop() {
  Portal.handleClient();

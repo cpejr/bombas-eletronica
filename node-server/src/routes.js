@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 
-routes.post("/testePost", teste);
+routes.post("/esp", teste);
 
 function teste(req, res){
     try{
