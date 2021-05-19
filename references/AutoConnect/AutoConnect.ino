@@ -11,7 +11,7 @@ String systemURL = "http://192.168.1.104:3000/esp";
 
 void rootPage() {
   char content[] = "Hello, world";
-  Server.send(200, "text/plain", content);
+  Server.send(200, "text/plain", content)
 }
 void setup() {
   delay(1000);
