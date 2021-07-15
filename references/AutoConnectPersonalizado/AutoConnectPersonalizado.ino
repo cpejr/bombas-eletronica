@@ -14,15 +14,19 @@ AutoConnect Portal(Server);
 String systemURL = "http://192.168.1.104:3000/esp";
 
 AutoConnectAux equipmentIdPage("/equipment_id", "Id do equipamento");
-ACText(header, "Configurações do ID do equipamento");
-ACText(caption, "Aqui você pode configurar o ID deste equipamento");
-ACInput(input1, "", "ID");
-ACSubmit(send, "HELLO", "/newIp");
+ACText(headerId, "Configurações do ID do equipamento");
+ACText(captionId, "Aqui você pode configurar o ID deste equipamento");
+ACInput(input1Id, "", "ID");
+ACSubmit(sendId, "NEWIP", "/newIp");
+
+AutoConnectAux equipmentResetPage("/equipment_reset", "Reset");
+ACText(headerReset, "Reset de ID");
+ACText(captionReset, "Caso clique no botão, o ID do equipamento será apagado de sua memória, e poderá ser reconfigurado");
+ACSubmit(sendReset, "RESET", "/reset");
 
 void onNewIp()
 {
   String id = Server.arg("input1");
-  Serial.println(id);
 
   HTTPClient http;
 
@@ -49,7 +53,6 @@ void onNewIp()
   }
   else
   {
-
     Serial.print("Error on sending POST: ");
     Serial.println(httpResponseCode);
   }
@@ -58,6 +61,15 @@ void onNewIp()
 
   Server.sendHeader("Location", String("/_ac"), true);
   Server.send(302, "text/plain", "");
+}
+
+void onReset(){
+  preferences.begin("equipment", false);
+  preferences.remove("id");
+  preferences.end();
+  Server.sendHeader("Location", String("/_ac"), true);
+  Server.send(302, "text/plain", "");
+  ESP.restart();
 }
 
 void setup()
@@ -74,12 +86,15 @@ void setup()
   String id = preferences.getString("id", "");
   if (id)
   {
+    equipmentResetPage.add({headerReset, captionReset, sendReset});
+    Portal.join(equipmentResetPage);
     Serial.println("Equipment Id: " + String(id));
+    Server.on("/reset", onReset);
   }
   else
   {
     Serial.println("No id provided to this equipment yet!");
-    equipmentIdPage.add({header, caption, input1, send});
+    equipmentIdPage.add({headerId, captionId, input1Id, sendId});
     Portal.join(equipmentIdPage);
     Server.on("/newIp", onNewIp);
   }
