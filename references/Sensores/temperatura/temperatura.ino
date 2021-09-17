@@ -28,7 +28,8 @@ void loop(void)
 {
   //Envia o comando para obter temperaturas
   temperature_sensor.requestTemperatures();
- // A temperatura em Celsius para o dispositivo 1 no índice 0 (é possivel ligar varios sensores usando a mesma porta do arduino)
+  // A temperatura em Celsius para o dispositivo 1 no índice 0 
+  //(é possivel ligar varios sensores usando a mesma porta do arduino)
   float leitura=temperature_sensor.getTempCByIndex(0);
    //Imprime na serial a varivel que recebe os dados do Sensor
    Serial.println(leitura);  
