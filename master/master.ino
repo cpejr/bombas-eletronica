@@ -7,23 +7,23 @@
 #include <WebServer.h>
 
 //Bibliotecas sensor de temperatura
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <Wire.h>  //Vem no Arduino já
-
-//Bibliotecas sensor de Corrente
-#include "EmonLib.h"
-#include <SPI.h>
+//#include <OneWire.h>
+//#include <DallasTemperature.h>
+//#include <Wire.h>  //Vem no Arduino já
+//
+////Bibliotecas sensor de Corrente
+//#include "EmonLib.h"
+//#include <SPI.h>
 
 //Configuracoes Temperatura
-#define ONE_WIRE_BUS 4 //variavel do pino 4 que esta plugado o Sensor de Temperatura
-OneWire oneWire(ONE_WIRE_BUS); //Instacia o Objeto oneWire e Seta o pino do Sensor para iniciar as leituras
-DallasTemperature temperature_sensor(&oneWire); //Repassa as referencias do oneWire para o Sensor Dallas (DS18B20)
+//#define ONE_WIRE_BUS 4 //variavel do pino 4 que esta plugado o Sensor de Temperatura
+//OneWire oneWire(ONE_WIRE_BUS); //Instacia o Objeto oneWire e Seta o pino do Sensor para iniciar as leituras
+//DallasTemperature temperature_sensor(&oneWire); //Repassa as referencias do oneWire para o Sensor Dallas (DS18B20)
 
 //Configuracoes Corrente
-EnergyMonitor emon1;
-int rede = 5; //Tensao da rede eletrica
-int pino_sct = 25; //Pino do sensor SCT
+//EnergyMonitor emon1;
+//int rede = 5; //Tensao da rede eletrica
+//int pino_sct = 25; //Pino do sensor SCT
 
 //Configuracoes do Autoconnect
 WebServer Server;
@@ -33,7 +33,8 @@ void rootPage() {
   Server.send(200, "text/plain", content);
 }
 
-String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
+//String systemURL = "http://bombastesteback.herokuapp.com/data/teste";
+String systemURL = "http://192.168.0.36:3333/data-equipment/create";
 
 
 void setup() {
@@ -46,27 +47,28 @@ void setup() {
 }
   
 void loop() {
-
     
  if(WiFi.status()== WL_CONNECTED){   //Check WiFi connection status
 
-   //Sensor de Temperatura
-   temperature_sensor.requestTemperatures();
-   float temp=temperature_sensor.getTempCByIndex(0);
-   Serial.print("Temperatura : ");
-   Serial.println(temp); 
+  Serial.println("Conectado!!! \n");
 
-   //Sensor de Corrente
-   double Irms = emon1.calcIrms(1480); //Calcula a corrente
-   Serial.print("Corrente : ");
-   Serial.println(Irms); //Mostra o valor da corrente no serial monitor e display
+   //Sensor de Temperatura
+//   temperature_sensor.requestTemperatures();
+//   float temp=temperature_sensor.getTempCByIndex(0);
+//   Serial.print("Temperatura : ");
+//   Serial.println(temp); 
+//
+//   //Sensor de Corrente
+//   double Irms = emon1.calcIrms(1480); //Calcula a corrente
+//   Serial.print("Corrente : ");
+//   Serial.println(Irms); //Mostra o valor da corrente no serial monitor e display
    
    
    HTTPClient http;   
   
    http.begin(systemURL);  //Specify destination for HTTP request
    http.addHeader("Content-Type", "application/json");             //Specify content-type header
-   String body = "{\"temperature\":\"32\",\"current\":\"10\",\"voltage\":\"24.25\",\"vibrations\":\"10\"}";
+   String body = "{\"id_equipment\": \"0aef1b10-18a7-11ec-b81d-f779577dddac\",\"temperature\":44,\"current\":8.8,\"voltage\":22}";
    int httpResponseCode = http.POST(body);   //Send the actual POST request
   
    if(httpResponseCode>0){
@@ -91,5 +93,5 @@ void loop() {
   
  }
   
-  delay(300000);  //Send a request every 5 minute
+  delay(1000);  //Send a request every 5 minute
 }
