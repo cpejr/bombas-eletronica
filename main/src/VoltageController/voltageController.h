@@ -1,8 +1,11 @@
-#include "Arduino.h"
-#include <cmath>
-#include "EmonLib.h" 
+#ifndef VOLTAGE_CONTROLLER_H
+#define VOLTAGE_CONTROLLER_H
 
-class VoltageController{
+#include "Arduino.h"
+#include "EmonLib.h"
+#include "../../HardwareProfile.h"
+
+class VoltageController {
 
     public:
         VoltageController(unsigned char pin);
@@ -11,4 +14,6 @@ class VoltageController{
 
     private:
         unsigned char _pin;
-}
+};
+
+#endif

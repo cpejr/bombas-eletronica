@@ -1,4 +1,4 @@
-#include "communicationController.hpp"
+#include "communicationController.h"
  
 WebServer Server;
 AutoConnect Portal(Server);
@@ -15,7 +15,7 @@ CommunicationController::CommunicationController(String stringUrl){
 
 void CommunicationController::init(void) {
 
-    delay(1000);
+    delay(COMMUNICATION_INIT_DELAY);
 
     Server.on("/", rootPage);
     if (Portal.begin()) {
@@ -24,7 +24,7 @@ void CommunicationController::init(void) {
 
 }
 
-void CommunicationController::sendDataToWeb(String route, String requestBody){
+void CommunicationController::sendDataToWeb(String route, String requestBody) {
 
     if (WiFi.status() == WL_CONNECTED) {   // Check WiFi connection status
 
@@ -34,7 +34,6 @@ void CommunicationController::sendDataToWeb(String route, String requestBody){
 
         http.begin(urlRequest);  
         http.addHeader("Content-Type", "application/json");      
-        String body = "{\"id_equipment\": \"0aef1b10-18a7-11ec-b81d-f779577dddac\",\"temperature\":100,\"current\":5,\"voltage\":40}";
         int httpResponseCode = http.POST(requestBody);   // Send the actual POST request
         
         if (httpResponseCode > 0) {
@@ -58,7 +57,5 @@ void CommunicationController::sendDataToWeb(String route, String requestBody){
         Serial.println("Error in WiFi connection");   
     
     }
-
-    delay(5000);
 };
 

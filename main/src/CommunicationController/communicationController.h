@@ -2,6 +2,7 @@
 #define COMMUNICATION_CONTROLLER_H
 
 #include "Arduino.h"
+#include "../../HardwareProfile.h"
 
 //Bibliotecas de conexao wifi
 #include <WiFi.h>
