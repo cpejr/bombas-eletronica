@@ -3,7 +3,7 @@
 #include <Wire.h>  //Vem no Arduino já
  
  
-#define ONE_WIRE_BUS 4 //variavel do pino que esta plugado o Sensor de Temperatura
+#define ONE_WIRE_BUS 13 //variavel do pino que esta plugado o Sensor de Temperatura
  
  
 //Instacia o Objeto oneWire e Seta o pino do Sensor para iniciar as leituras
@@ -17,7 +17,7 @@ DallasTemperature temperature_sensor(&oneWire);
 void setup(void)
 {
   //Inicia a Serial
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Sensor de temperatura Dallas DS18b20");
   //Inicia o objeto da biblioteca do Dallas
   temperature_sensor.begin();

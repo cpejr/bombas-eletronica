@@ -11,14 +11,14 @@ MMA8452Q acelerometro(0x1C);
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Teste de comunicacao MMA8452");
   //Inicializa o acelerometro com o valores padrao de +/-2g e
   //saida de 800 Hz
-  acelerometro.init();
+//  acelerometro.init();
   //Utilize a linha abaixo para inicializar o acelerometro com
   //+/-2g, 4g, or 8g, usando SCALE_2G, SCALE_4G, ou SCALE_8G
-  //acelerometro.init(SCALE_4G);
+  acelerometro.init(SCALE_8G);
   //Utilize a linha abaixo para determinar tambem a frequencia
   //de saida do acelerometro (padrao de 800 Hz), utilizando
   //como segundo parametro ODR_800 (800 Hz), ODR_400 (400 Hz),
@@ -45,11 +45,12 @@ void loop()
     printCalculatedAccels();
     
     //Selecione a linha abaixo para mostra os valores digitais
-    //printAccels();
+//    printAccels();
     
     //Mostra a orientacao (retrato/paisagem/flat)
-    printOrientation();
+//    printOrientation();
     Serial.println();
+    delay(150);
   }
 }
 

@@ -3,12 +3,12 @@
 #include <DallasTemperature.h>
 #include <Wire.h>  //Vem no Arduino já
  
-class TemperatureController{
+class TemperatureController {
     public:
         TemperatureController(unsigned char pin);
         void init();
         float readTemperature(int tempC);
 
     private:
-        unsigned char
-}
+        unsigned char _pin;
+};
