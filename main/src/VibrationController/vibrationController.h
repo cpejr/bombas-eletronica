@@ -1,14 +1,16 @@
 #include "Arduino.h"
 #include <Wire.h>
-#include <SFE_MMA8452Q.h>
+#include "stdint.h"
+#include "../../HardwareProfile.h"
 
 class VibrationController{
 
     public:
-        VibrationController();
+        VibrationController(unsigned char address);
         void init();
         float readVibration();
 
     private:
-        unsigned char _pin;
-}
+        unsigned char _i2cAddress;
+        int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+};

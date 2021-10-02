@@ -6,12 +6,13 @@
 //Carrega a biblioteca Wire
 #include<Wire.h>
 #include "src/CommunicationController/communicationController.h"
+//#include "stdint.h"
 
  
 //Endereco I2C do MPU6050
 const int MPU=0x68;  
 //Variaveis para armazenar valores dos sensores
-signed int AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 
 CommunicationController* communicationController = new CommunicationController(COMMUNICATION_BASE_URL);
 
@@ -20,6 +21,7 @@ void setup()
   Serial.begin(115200);
 
   Wire.begin();
+  Wire.setClock(400000);
   Wire.beginTransmission(MPU);
   Wire.write(0x6B); 
    
@@ -27,7 +29,7 @@ void setup()
   Wire.write(0); 
   Wire.endTransmission(true);
 
-  communicationController -> init();
+//  communicationController -> init();
 }
 
 void loop()
@@ -46,26 +48,30 @@ void loop()
   GyX=Wire.read()<<8|Wire.read();  //0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
   GyY=Wire.read()<<8|Wire.read();  //0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
   GyZ=Wire.read()<<8|Wire.read();  //0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-   
-  String id = "0aef1b10-18a7-11ec-b81d-f779577dddac";
-  float currentMeasurement = AcX;
-  float temperatureMeasurement = 22.43;
-  float voltageMeasurement = 127.55;
-   
-  // monta o JSON para fazer o envio
-  String requestBody = 
 
-    "{\"id_equipment\": \"" + id + 
-    "\",\"temperature\":" +  String(temperatureMeasurement) + 
-    ",\"current\": " + String(currentMeasurement) + 
-    ",\"voltage\": " + String(voltageMeasurement) + "}";
+  Serial.print("AcX = "); Serial.print(AcX / (float)16384 * 9.80); Serial.print(" m/s2");
+  Serial.print(" | AcY = "); Serial.print(AcY / (float)16384 * 9.80); Serial.print(" m/s2");
+  Serial.print(" | AcZ = "); Serial.print(AcZ / (float)16384 * 9.80); Serial.println(" m/s2");
+     
+//  String id = "0aef1b10-18a7-11ec-b81d-f779577dddac";
+//  float currentMeasurement = AcX;
+//  float temperatureMeasurement = 22.43;
+//  float voltageMeasurement = 127.55;
+//   
+//  // monta o JSON para fazer o envio
+//  String requestBody = 
 //
-  Serial.println(requestBody);
+//    "{\"id_equipment\": \"" + id + 
+//    "\",\"temperature\":" +  String(temperatureMeasurement) + 
+//    ",\"current\": " + String(currentMeasurement) + 
+//    ",\"voltage\": " + String(voltageMeasurement) + "}";
+////
+//  Serial.println(requestBody);
 
-  communicationController -> sendDataToWeb("data-equipment/create", requestBody);
+//  communicationController -> sendDataToWeb("data-equipment/create", requestBody);
 
-  delay(MEASUREMENT_INTERVAL);
+//  delay(MEASUREMENT_INTERVAL);
    
   //Aguarda 300 ms e reinicia o processo
-  // delay(300);
+   delay(300);
 }
