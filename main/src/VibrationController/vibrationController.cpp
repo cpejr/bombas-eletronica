@@ -17,7 +17,7 @@ void VibrationController::init() {
     Wire.endTransmission(true);
 }
 
-float VibrationController::readVibration() {
+void VibrationController::readVibration() {
 
     Wire.beginTransmission(this->_i2cAddress);
     Wire.write(MPU_ACCEL_XOUT_REGISTER);  
@@ -25,7 +25,7 @@ float VibrationController::readVibration() {
     // Solicita os dados do sensor
     Wire.requestFrom(this->_i2cAddress, VIBRATION_NUMBER_OF_BYTES, true); 
 
-    // Armazena o valor dos sensores nas variaveis correspondentes
+    // Armazena o valor dos sensores nos atributos da classe
     this->AcX = Wire.read() << 8 | Wire.read();  //0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)     
     this->AcY = Wire.read() << 8 | Wire.read();  //0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
     this->AcZ = Wire.read() << 8 | Wire.read();  //0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
@@ -33,6 +33,16 @@ float VibrationController::readVibration() {
     this->GyX = Wire.read() << 8 | Wire.read();  //0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
     this->GyY = Wire.read() << 8 | Wire.read();  //0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
     this->GyZ = Wire.read() << 8 | Wire.read();  //0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+}
 
-    return this -> AcZ / (float) 16384 * 9.81;
+float VibrationController::getXAxisVibration() {
+    return fabs(this -> AcX / (float) ACCEL_MEASUREMENT_SCALE * G_ACCELERATION);
+}
+
+float VibrationController::getYAxisVibration() {
+    return fabs(this -> AcY / (float) ACCEL_MEASUREMENT_SCALE * G_ACCELERATION);
+}
+
+float VibrationController::getZAxisVibration() {
+    return fabs(this -> AcZ / (float) ACCEL_MEASUREMENT_SCALE * G_ACCELERATION);
 }

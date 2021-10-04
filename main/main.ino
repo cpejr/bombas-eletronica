@@ -18,19 +18,28 @@ void setup() {
 };
 
 void loop() {
-    
+
     String id = "0aef1b10-18a7-11ec-b81d-f779577dddac";
-    float currentMeasurement = vibrationController -> readVibration();
     float temperatureMeasurement = temperatureController -> readTemperature(TEMPERATURE_SCALE);
-    float voltageMeasurement = 127.55;
-    
+    float currentMeasurement = 0;
+    float voltageMeasurement = 0;
+
+    vibrationController -> readVibration();
+    float xAxisMeasurement = vibrationController -> getXAxisVibration();
+    float yAxisMeasurement = vibrationController -> getYAxisVibration();
+    float zAxisMeasurement = vibrationController -> getZAxisVibration();
+
     // monta o JSON para fazer o envio
     String requestBody = 
 
         "{\"id_equipment\": \"" + id + 
         "\",\"temperature\":" +  String(temperatureMeasurement) + 
         ",\"current\": " + String(currentMeasurement) + 
-        ",\"voltage\": " + String(voltageMeasurement) + "}";
+        ",\"voltage\": " + String(voltageMeasurement) + 
+        ",\"vibration\": {\"x_axis\": " + String(xAxisMeasurement) +  
+            ",\"y_axis\":" +  String(yAxisMeasurement) + 
+            ",\"z_axis\": " + String(zAxisMeasurement) + "}" + 
+        "}";
     
     Serial.println(requestBody);
 

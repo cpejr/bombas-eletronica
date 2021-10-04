@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include <Wire.h>
 #include "stdint.h"
+#include <cmath>
 #include "../../HardwareProfile.h"
 
 class VibrationController{
@@ -8,7 +9,10 @@ class VibrationController{
     public:
         VibrationController(unsigned char address);
         void init();
-        float readVibration();
+        void readVibration();
+        float getXAxisVibration();
+        float getYAxisVibration();
+        float getZAxisVibration();
 
     private:
         unsigned char _i2cAddress;

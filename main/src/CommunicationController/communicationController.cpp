@@ -55,7 +55,6 @@ void CommunicationController::sendDataToWeb(String route, String requestBody) {
     } else {
     
         Serial.println("Error in WiFi connection");   
-    
     }
 };
 

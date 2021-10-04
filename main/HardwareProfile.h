@@ -1,6 +1,6 @@
 // configurações gerais
 #define SERIAL_BAUD_RATE 115200
-#define MEASUREMENT_INTERVAL 2000
+#define MEASUREMENT_INTERVAL 5000
 
 // sensor de vibração
 #define VIBRATION_SENSOR_I2C_ADDRESS 0x68
@@ -8,6 +8,8 @@
 #define VIBRATION_NUMBER_OF_BYTES 14
 #define MPU_WHO_AM_I_REGISTER 0x6B
 #define MPU_ACCEL_XOUT_REGISTER 0x3B
+#define ACCEL_MEASUREMENT_SCALE 16384 // 16384LSB / g
+#define G_ACCELERATION 9.81
 
 // sensor de corrente
 #define CURRENT_MEASUREMENT_PIN 'A1'
