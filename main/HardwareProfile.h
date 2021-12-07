@@ -1,6 +1,6 @@
 // configurações gerais
 #define SERIAL_BAUD_RATE 115200
-#define MEASUREMENT_INTERVAL 5000
+#define MEASUREMENT_INTERVAL 5 * 1000
 
 // sensor de vibração
 #define VIBRATION_SENSOR_I2C_ADDRESS 0x68
@@ -12,13 +12,13 @@
 #define G_ACCELERATION 9.81
 
 // sensor de corrente
-#define CURRENT_MEASUREMENT_PIN 'A1'
-#define CURRENT_CALIBRATION 60
-#define CURRENT_READ 1480
+#define CURRENT_MEASUREMENT_PIN 35 // ADC_1
+#define CURRENT_CALIBRATION 6.06
+#define CURRENT_SAMPLES 1480
 
 // sensor de temperatura
 #define TEMPERATURE_SCALE 0 // 0 = celcius, 1 = fahrenheit
-#define TEMPERATURE_MEASUREMENT_PIN 13
+#define TEMPERATURE_MEASUREMENT_PIN 13 // digital
 
 // sensor de tensão
 #define VOLTAGE_MEASUREMENT_PIN 12
@@ -30,4 +30,5 @@
 
 // configuração da comunicação
 #define COMMUNICATION_BASE_URL "http://192.168.0.36:3333/"
+// #define COMMUNICATION_BASE_URL "https://acompanhamento-bombas-dev-api.herokuapp.com/"
 #define COMMUNICATION_INIT_DELAY 1000

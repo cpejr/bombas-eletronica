@@ -1,14 +1,13 @@
 #include "Arduino.h"
 #include "EmonLib.h"
-#include <SPI.h>
 
-class CurrentController{
+class CurrentController {
 
     public:
         CurrentController(unsigned char pin);
         void init(int calibration);
-        double readCurrent(int read);
+        float readCurrent(int samples);
 
     private:
         unsigned char _pin;
-}
+};

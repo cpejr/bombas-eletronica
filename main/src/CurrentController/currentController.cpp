@@ -1,6 +1,6 @@
 #include "currentController.h"
  
-EnergyMonitor emon1;
+EnergyMonitor emon2;
 
 CurrentController::CurrentController(unsigned char pin){
 
@@ -9,16 +9,12 @@ CurrentController::CurrentController(unsigned char pin){
 
 void CurrentController::init(int calibration){
     
-    pinMode(this->_pin, INPUT);
-
-    Serial.begin(9600);
-    //Pino, calibracao - Cur Const= Ratio/BurdenR. 2000/33 = 60
-    emon1.current(this->_pin, calibration); 
+    emon2.current(this->_pin, calibration); 
 }
 
-float CurrentController::readCurrent(int read){
+float CurrentController::readCurrent(int samples){
 
-    double Irms = emon1.calcIrms(read); //Calcula a corrente
+    float Irms = emon2.calcIrms(samples); // Calcula a corrente
     
     return Irms;
 }
