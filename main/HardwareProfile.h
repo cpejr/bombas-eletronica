@@ -1,6 +1,6 @@
 // configurações gerais
 #define SERIAL_BAUD_RATE 115200
-#define MEASUREMENT_INTERVAL 5 * 1000
+#define MEASUREMENT_INTERVAL 5 * 60 * 1000
 
 // sensor de vibração
 #define VIBRATION_SENSOR_I2C_ADDRESS 0x68
@@ -29,6 +29,6 @@
 #define VOLTAGE_NUMBER_OF_MEASUREMENTS 20
 
 // configuração da comunicação
-#define COMMUNICATION_BASE_URL "http://192.168.0.36:3333/"
-// #define COMMUNICATION_BASE_URL "https://acompanhamento-bombas-dev-api.herokuapp.com/"
+// #define COMMUNICATION_BASE_URL "http://192.168.0.36:3333/"
+#define COMMUNICATION_BASE_URL "https://acompanhamento-bombas-dev-api.herokuapp.com/"
 #define COMMUNICATION_INIT_DELAY 1000
